@@ -43,7 +43,7 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
     - `100> wtype >= 10`: Binned w(a). Suppose i and j are the tens and ones places of `wtype` (i.e. `wtype` = 10*i+j), $1>=a>0$ is divided uniformly in $i^\sqrt{a}$ into $j+1$ points. That is, provided fixed $j$, larger $i$ gives a finer binning around $a=1$.
   - `w[0]`, `w[1]`, ...: EoS parameters. 
     - `w[0]`=$w_0$ and `w[1]`=$w_a$ when `wtype = 0`.
-    - Array (`w[0]`,w[1], ..., `w[j]`) gives the binned $w(a)$. `w[0]` (`w[j]`) corresponds to the bin with largest (smallest) $a$.    
+    - Array (`w[0]`,w[1],..., `w[j]`) gives the binned $w(a)$. `w[0]` (`w[j]`) corresponds to the bin with largest (smallest) $a$.    
   - `nnu`: Effective number of neutrinos. The total number of neutrinos are enhanced by this factor (temperature is fixed to the standard value i.e. $T_\nu = (4/11)^{1/3} T_\gamma$.
   - `mnu`: Sum of neutrino mass in units of eV.
   - `neutrino_hierarchy`: Flag for neutrino mass hierarchy. 1 for normal, 0 for degenerate and -1 for inverted ones.
@@ -53,19 +53,25 @@ Background evolution is computed based on iteration method using the following p
   - `max_it`: Maximum iteration number. This is not relevant because usually convergence is achieved within one iteration.
   - `tol`: Tolerance parameter for the error from the true evolution measured by the current energy density of massless decay-product. Setting to `1e-10` works.
 * [LIKELIHOODS]
-  - `use_BAO`,`use_H0`, `use_CMB`: Flags for whether data is incorporated in likelihood calculation. They should be either `true` of `false`
+  - `use_BAO`,`use_H0`, `use_CMB`, `use_SNeIa`: Flags for whether data is incorporated in likelihood calculation. They should be either `true` of `false`.
 * [MCMC]
-  - `ob`, `odm`, `ol`, `decay_rate`, `mratio`, `nnu`, `mnu`: When each parameter is varied in the parameter estimation, four numbers should be given in order: lower limit, upper limit, slope of prior distribution, initial fluctuations. When left as blank, corresponding parameter is fixed to the fiducial value. Commas ',' should be used to separate each item. Prior distribution of a each parameter $x$ is assumed to be in proportional to $\theta(x-x_{\rm min})\theta(x_{\rm max}-x)x^{n_x}$, where $x_{\rm min}$, $x_{\rm max}$, $n_x$ are the first three components in each line. 
+  - `obh2`, `odmh2`, `odeh2`,`w[0]`,..., `nnu`, `mnu`: When each parameter is varied in the parameter estimation, four numbers should be given in order: lower limit, upper limit, slope of prior distribution, initial fluctuations. When left as blank, corresponding parameter is fixed to the fiducial value. Commas ',' should be used to separate each item. Prior distribution of a each parameter $x$ is assumed to be in proportional to $\theta(x-x_{\rm min})\theta(x_{\rm max}-x)x^{n_x}$, where $x_{\rm min}$, $x_{\rm max}$, $n_x$ are the first three components in each line. 
   - `nwalkers`: Number of walkers in affine invariant MCMC sampler. This should be at least twice the number of varied parameters.
   - `nsteps`: Number of steps for MCMC analysis
   - `parallel`: If `true`, parallelization is implemented in the MCMC calculation.
 
 ### Role of each python file:
 * `const.py`: Definition of units and constants
-* `mdd.py`: Calculation of cosmological background evolution. 
+* `background.py`: Calculation of cosmological background evolution. 
 * `likelihoods.py`: Calculation of likelihood function incorporating recent BAO (arXiv:1607.03155, arXiv:1801.03062, arXiv:1702.00176), direct Hubble measurement (arXiv:2001.03624) and CMB $\theta_*$ (arXiv:1807.06209).
+* `SN.py`: Likelihood code for type Ia supernovae, taken from CosmoMC (https://github.com/cmbant/CosmoMC).
 * `mcmc.py`: MCMC analysis based on Affine Invariant MCMC sampler (emcee). Parallelization is supported based on the multiprocessing python module. Restart functionarity is supported.
 * `driver.py`: Main function.
+
+### Files in `/data` directories:
+* `bbn.dat`: Lookup table of BBN $Y_p$.
+* `Pantheon/*`: Pantheon SNeIa data.
+* `jla*`: JLA SneIa data.
 
 ## Stage 2: Postprocessing
 
@@ -92,14 +98,8 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
 * Recombination history is computed based on HyReC (https://pages.jh.edu/~yalihai1/hyrec/hyrec.html). Hyrec in our code is modified from the original one so that massive neutrinos are incorporated and interface to Python is realized by SWIG.
 
 # Version history
-* March 30th, 2020
-  - Some derived parameters are calculated and written in chains at run-time of the MCMC stage. Slopes of prior distributions of parameters can be now specified.
-  - Postprocessing is updated. Some minor bugs are fixed. Derived parameters are now incorporated.
-* March 4nd, 2020
-  - Restart functionarity is now supported.
-  - HyRec wrapper is modified. In the previous version, segmentation faults occur when HyRec is located on a path which includes symbolic links. All the files for look-up tables are now referred by their physical pathes.
-* March 2nd, 2020
+* April 8th, 2020
   - Initial release.
 
-# To-do list 
-- [ ] Multiple plots with different sets of (primary and derived) parameters in different scales (e.g. linear, log, etc.).
+# To-do list
+- [ ] Visualization of reconstructed EoS as function of `a`.

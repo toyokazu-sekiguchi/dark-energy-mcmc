@@ -38,13 +38,12 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
   - `root`: Chacters specifying output prefix.
 * [COSMOLOGY]
   - `obh2`, `odmh2`, `odeh2`: Density parameters $\Omega_i h^2$ of baryon, dark matter (assuming no decay) and dark energy.
-  - `wtype`: This specifies a dark energy parameterization. 
-    - aaa
-    - bbb
-w[0] = -1
-w[1] = -1
-w[2] = -1
-w[3] = -1
+  - `wtype`: Integer specifying a parameterization of dark energy equation of state (EoS). Currently the following parameterizations are supported.
+    - `wtype = 0`: The CPL parameterization $w(a) = w_0+w_a(1-a)$.
+    - `100> wtype >= 10`: Binned w(a). Suppose i and j are the tens and ones places of `wtype` (i.e. `wtype` = 10*i+j), $1>=a>0$ is divided uniformly in $i^\sqrt{a}$ into $j+1$ points. That is, provided fixed $j$, larger $i$ gives a finer binning around $a=1$.
+  - `w[0]`, `w[1]`, ...: EoS parameters. 
+    - `w[0]`=$w_0$ and `w[1]`=$w_a$ when `wtype = 0`.
+    - Array (`w[0]`,w[1], ..., `w[j]`) gives the binned $w(a)$. `w[0]` (`w[j]`) corresponds to the bin with largest (smallest) $a$.    
   - `nnu`: Effective number of neutrinos. The total number of neutrinos are enhanced by this factor (temperature is fixed to the standard value i.e. $T_\nu = (4/11)^{1/3} T_\gamma$.
   - `mnu`: Sum of neutrino mass in units of eV.
   - `neutrino_hierarchy`: Flag for neutrino mass hierarchy. 1 for normal, 0 for degenerate and -1 for inverted ones.

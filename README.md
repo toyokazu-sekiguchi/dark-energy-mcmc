@@ -102,4 +102,4 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
   - Initial release.
 
 # To-do list
-- [ ] Visualization of reconstructed EoS as function of `a`.
+- [ ] Visualization of reconstructed EoS as function of $a$.

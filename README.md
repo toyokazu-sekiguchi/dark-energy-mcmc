@@ -71,7 +71,7 @@ Background evolution is computed based on iteration method using the following p
 ### Files in `/data` directories:
 * `bbn.dat`: Lookup table of BBN $Y_p$.
 * `Pantheon/*`: Pantheon SNeIa data.
-* `jla*`: JLA SneIa data.
+* `jla*`: JLA SNeIa data.
 
 ## Stage 2: Postprocessing
 

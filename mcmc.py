@@ -64,6 +64,7 @@ class MCMC():
         self.nblobs = len(dtype)
 
         if(self.parallel):
+            #import multiprocessing as mp
             from multiprocessing import Pool,cpu_count
             import os
             
@@ -73,10 +74,11 @@ class MCMC():
             MC0 = MCMC(self.pf)
             MC0.SetParams(self.mapv,self.rangev,self.nwalkers,verbose=0)
             MC0.nblobs = self.nblobs
-            
+                
             # Intel MKL should be serialized as instructed in emcee userguide
             os.environ["OMP_NUM_THREADS"] = "1"
-            
+            os.environ["OBJC_DISABLE_INITIALIZE_FORK_SAFETY"] = "YES"
+                
             with Pool() as pool:
                 
                 self.sampler = emcee.EnsembleSampler(MC0.nwalkers,MC0.nv,LnPost,args=(MC0,BG0,LF0),backend=backend,blobs_dtype=dtype,pool=pool)

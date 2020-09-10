@@ -27,6 +27,9 @@ def main():
                           Ini.ReadFloat(section,"nnu"),Ini.ReadFloat(section,"mnu"),Ini.ReadFloat(section,"w[0]"),
                           Ini.ReadFloat(section,"w[1]"),Ini.ReadFloat(section,"w[2]"),Ini.ReadFloat(section,"w[3]")])
     BG.SetParams(paramsfid)
+
+    # test
+    BG.OutputComovingDistance(root+'_distance.txt',1e-3,1e3,100)
     
     # likelihood calculation
     section = "LIKELIHOODS"
@@ -36,9 +39,9 @@ def main():
     print(" ln(L)=",lnL[:])
 
     # MCMC
-    #inp = input("\nDoes everything seem going fine? Then let's run MCMC [Y/n]:")
-    #if(inp=='n'):
-    #    sys.exit()
+    inp = input("\nDoes everything seem going fine? Then let's run MCMC [Y/n]:")
+    if(inp=='n'):
+        sys.exit()
     section ='MCMC'
     BG.verbose  = LF.verbose  = 0
     paramrange = [Ini.ReadFloatArray(section,"obh2"),Ini.ReadFloatArray(section,"odmh2"),Ini.ReadFloatArray(section,"odeh2"),
@@ -51,4 +54,5 @@ def main():
     chain = root+".h5"
     driver.Run(chain,Ini.ReadInt(section,"nsteps"),BG,LF)
     
-main()
+if __name__ == '__main__':
+    main()

@@ -92,7 +92,7 @@ class DarkEnergy:
             self.lnz1min = 0
             self.lnz1max = np.log(3e3)
             if(self.binned):
-                self.nlnz1 = self.nbin+1
+                self.nlnz1 = self.nbin
             else:
                 self.nlnz1 = 50
 
@@ -104,7 +104,7 @@ class DarkEnergy:
 
         if(self.lnrinterp):
             if(self.binned):
-                self.abin = np.linspace(np.exp(-self.lnz1min),np.exp(-self.lnz1max),self.nlnz1)**(1/self.pbin)
+                self.abin = np.linspace(np.exp(-self.lnz1min),np.exp(-self.lnz1max),self.nbin)**(1/self.pbin)
                 lnz1 = -np.log(self.abin)
             else:
                 lnz1 = np.linspace(self.lnz1min,self.lnz1max,self.nlnz1)
@@ -197,11 +197,24 @@ class Background:
         return integrate.quad(self.dtauda,a1,a2)[0]
 
     def drsda(self,a):
-        cs = np.sqrt(1/3/(1+0.75*a*self.obh2/self.ogh2))*const.c
+        cs = np.sqrt(1/3/(1+self.R(a)))*const.c
         return cs*self.dtauda(a)
     
     def SoundHorizon(self,a):
         return integrate.quad(self.drsda,0,a)[0]
+
+    def R(self,a):
+        return 0.75*a*self.obh2/self.ogh2
+    
+    def OutputComovingDistance(self,file,zmin,zmax,numz):
+        
+        z = np.logspace(np.log10(zmin),np.log10(zmax),numz,base=10)
+        d = np.empty(numz)
+        d[0] = self.DeltaTau(1/(1+z[0]),1)
+        for i in range(1,numz):
+            d[i] = d[i-1]+self.DeltaTau(1/(1+z[i]),1/(1+z[i-1]))
+        d *= const.c/const.Mpc
+        np.savetxt(file,np.concatenate([z[:,None],d[:,None]],axis=1))
     
     def UpdateTherm(self):
         from HyRec import pyrec
@@ -249,7 +262,17 @@ class Background:
         
         self.zstar = optimize.brentq(lambda x:spl_opt(np.log(x)),zstar1,zstar2)
         self.zdrag = optimize.brentq(lambda x:spl_drag(np.log(x)),zdrag1,zdrag2)
-        
+
+    def drdiff2da(self,a):
+        from HyRec import pyrec
+        R = self.R(a)
+        R1 = R+1
+        akthom = self.obh2*const.rhoch2/const.c*(1-self.yp)/const.m_H*const.sigmaT
+        return (R*R+16*R1/15)/(R1*R1*6)*a*a/(pyrec.hyrec_xe(a)*akthom)*self.dtauda(a)*const.c*const.c
+    
+    def SilkScale(self,a):
+        return np.sqrt(integrate.quad(self.drdiff2da,0,a)[0])
+
     def SetDerivedParams(self):
         self.ndparams = 2
         self.dparams = ["H0","Age"]

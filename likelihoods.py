@@ -140,11 +140,14 @@ class DataCMB:
     def LnLike(self,BG):
         astar = 1/(1+BG.zstar)
         rstar = BG.SoundHorizon(astar)
+        rdiff = BG.SilkScale(astar)
         DA = BG.DeltaTau(astar,1)*const.c
         theta = rstar/DA
         if(self.verbose>0):
             print(' z_*:%f, r_*[Mpc]:%f'%(BG.zstar,rstar/const.Mpc))
             print(' 100*theta_*:%e'%(100*theta))
+            print(' k_D[Mpc^{-1}]:%e'%(const.Mpc/rdiff))
+            print(' 100*theta_diff:%e'%(100*rdiff*np.pi/DA))
         return -0.5*((theta-self.mean)/self.error)**2
     
 class Likelihood:

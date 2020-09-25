@@ -68,7 +68,7 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
 * `bbn.dat`: Lookup table of BBN $Y_p$.
 * `Pantheon/*`: Pantheon SNeIa data.
 * `jla*`: JLA SNeIa data.
-
+* `bao.dataset`: BAO data based on Alam et al. (https://arxiv.org/abs/2007.08991).
 ## Stage 2: Postprocessing
 
 ### Basic usage:
@@ -97,7 +97,7 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
 * April 8th, 2020
   - Initial release.
 * September 25th, 2020
-  - BAO likelihood function is replaced; now based on Alam et al. (arXiv:2007.08991).
+  - BAO likelihood function is replaced; now based on Alam et al. (https://arxiv.org/abs/2007.08991).
 
 # To-do list
 - [ ] Visualization of reconstructed EoS as function of $a$.

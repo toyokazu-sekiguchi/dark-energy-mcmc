@@ -34,7 +34,8 @@ def main():
     # likelihood calculation
     section = "LIKELIHOODS"
     LF = likelihoods.Likelihood(Ini.ReadBoolean(section,"use_BAO"),Ini.ReadBoolean(section,"use_H0"),
-                                Ini.ReadBoolean(section,"use_CMB"),Ini.ReadBoolean(section,"use_SNeIa"),verbose=1)
+                                Ini.ReadBoolean(section,"use_CMB"),Ini.ReadBoolean(section,"use_SNeIa"),
+                                dataBAO=Ini.ReadString(section,"data_BAO").split(),verbose=1)
     lnL = LF.LnLike(BG,0)
     print(" ln(L)=",lnL[:])
 

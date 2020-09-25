@@ -8,10 +8,15 @@ class BBN:
     def __init__(self):
         filename = "data/bbn.dat" # based on PArthENoPE taken from CLASS 
         data = np.loadtxt(filename)
-        self.spl_yp = interpolate.interp2d(data[:,0],data[:,1],data[:,2],kind="linear") # cubic doesn't work; why?
-        
+        #self.spl_yp = interpolate.interp2d(data[:,0],data[:,1],data[:,2],kind="linear") # cubic doesn't work; why?
+        self.spl_yp = interpolate.Rbf(data[:,0],data[:,1],data[:,2]) # linear interpolation at best
+
     def yp(self,obh2,dnnu):
-        return self.spl_yp(obh2,dnnu)
+        #filename = "data/bbn.dat" # based on PArthENoPE taken from CLASS 
+        #data = np.loadtxt(filename)
+        #print(self.spl_yp(obh2,dnnu),interpolate.griddata(data[:,0:2],data[:,2],(obh2,dnnu),method="linear"))
+        #return self.spl_yp(obh2,dnnu)[0]
+        return float(self.spl_yp(obh2,dnnu))
 
 class MassiveNu:
 
@@ -172,7 +177,7 @@ class Background:
         self.nu.SetParams(params[3],params[4])
         self.onuh2_nomass = self.ogh2*7/8*(const.TCnuB/const.TCMB)**4*self.nu.nnu
         self.de.SetParams(params[5:])
-        self.yp = self.bbn.yp(self.obh2,self.nu.nnu-const.nnu_standard)[0]
+        self.yp = self.bbn.yp(self.obh2,self.nu.nnu-const.nnu_standard)
         
         if(self.verbose>0):
             print("\n# cosmological parameters:")

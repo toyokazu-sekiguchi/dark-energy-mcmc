@@ -70,7 +70,7 @@ class MCMC():
             
             # following classes are required to be created so that LnPost should be pickable
             BG0 = background.Background(BG.nu.hierarchy,BG.de.wtype,verbose=0)
-            LF0 = likelihoods.Likelihood(LF.useBAO,LF.useH0,LF.useCMB,LF.useSNeIa,verbose=0)
+            LF0 = likelihoods.Likelihood(LF.useBAO,LF.useH0,LF.useCMB,LF.useSNeIa,LF.dataBAO,verbose=0)
             MC0 = MCMC(self.pf)
             MC0.SetParams(self.mapv,self.rangev,self.nwalkers,verbose=0)
             MC0.nblobs = self.nblobs

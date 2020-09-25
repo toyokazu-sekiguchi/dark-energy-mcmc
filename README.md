@@ -59,7 +59,7 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
 ### Role of each python file:
 * `const.py`: Definition of units and constants
 * `background.py`: Calculation of cosmological background evolution. 
-* `likelihoods.py`: Calculation of likelihood function incorporating recent BAO (arXiv:1607.03155, arXiv:1801.03062, arXiv:1702.00176), direct Hubble measurement (arXiv:2001.03624) and CMB $\theta_*$ (arXiv:1807.06209).
+* `likelihoods.py`: Calculation of likelihood function incorporating recent BAO (~~arXiv:1607.03155, arXiv:1801.03062, arXiv:1702.00176~~arXiv:2007.08991), direct Hubble measurement (arXiv:2001.03624) and CMB $\theta_*$ (arXiv:1807.06209).
 * `SN.py`: Likelihood code for type Ia supernovae, taken from CosmoMC (https://github.com/cmbant/CosmoMC).
 * `mcmc.py`: MCMC analysis based on Affine Invariant MCMC sampler (emcee). Parallelization is supported based on the multiprocessing python module. Restart functionarity is supported.
 * `driver.py`: Main function.
@@ -68,7 +68,7 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
 * `bbn.dat`: Lookup table of BBN $Y_p$.
 * `Pantheon/*`: Pantheon SNeIa data.
 * `jla*`: JLA SNeIa data.
-* `bao.dataset`: BAO data based on Alam et al. (https://arxiv.org/abs/2007.08991).
+* `bao.dataset`: BAO data.
 ## Stage 2: Postprocessing
 
 ### Basic usage:

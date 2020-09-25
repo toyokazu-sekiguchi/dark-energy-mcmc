@@ -1,0 +1,47 @@
+# Alam et al. arXiv:2007.08991
+
+[MGS]
+type = 1
+z = 0.15
+DV = 4.47, 0.17
+
+[BOSS_Galaxy_1]
+type = 2
+z = 0.38
+DM = 10.23, 0.17
+DH = 25.00, 0.76
+
+[BOSS_Galaxy_2]
+type = 2
+z = 0.51
+DM = 13.36, 0.21
+DH = 22.33, 0.38
+
+[eBOSS_LRG]
+type = 2
+z = 0.70
+DM = 17.86, 0.33
+DH = 19.33, 0.53
+
+[eBOSS_ELG]
+type = 1
+z = 0.85
+DV = 18.33, 0.59
+
+[eBOSS_Quasar]
+type = 2
+z = 1.48
+DM = 30.69, 0.80
+DH = 13.26, 0.55
+
+[Lya_Lya]
+type = 2
+z = 2.33
+DM = 37.6, 1.9
+DH = 8.93, 0.28
+
+[Lya_Quasar]
+type = 2
+z = 2.33
+DM = 37.3, 1.7
+DH = 9.08, 0.34

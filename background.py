@@ -279,10 +279,11 @@ class Background:
         return np.sqrt(integrate.quad(self.drdiff2da,0,a)[0])
 
     def SetDerivedParams(self):
-        self.ndparams = 2
-        self.dparams = ["H0","Age"]
+        self.ndparams = 3
+        self.dparams = ["H0","Age","rs*"]
         
     def GetDerivedParams(self):
         H0 = self.H0()
         t_in_Gyr = integrate.quad(lambda x:x*self.dtauda(x),1e-3,1)[0]/const.Gyr
-        return [H0,t_in_Gyr]
+        rsstar = self.SoundHorizon(1/(self.zstar+1))
+        return [H0,t_in_Gyr,rsstar]

@@ -98,6 +98,8 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
   - Initial release.
 * September 25th, 2020
   - BAO likelihood function is replaced; now based on Alam et al. (https://arxiv.org/abs/2007.08991).
-
+* September 30th, 2020
+  - $r_{s*}$ is added in the derived parameters.
+  
 # To-do list
 - [ ] Visualization of reconstructed EoS as function of $a$.

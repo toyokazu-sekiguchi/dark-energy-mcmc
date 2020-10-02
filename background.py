@@ -6,17 +6,26 @@ import const
 class BBN:
     
     def __init__(self):
-        filename = "data/bbn.dat" # based on PArthENoPE taken from CLASS 
-        data = np.loadtxt(filename)
-        #self.spl_yp = interpolate.interp2d(data[:,0],data[:,1],data[:,2],kind="linear") # cubic doesn't work; why?
-        self.spl_yp = interpolate.Rbf(data[:,0],data[:,1],data[:,2]) # linear interpolation at best
+        #Replaced with data from Omakatsu-kun
+        data = np.loadtxt("data/data_100.txt")
+        self.spl_yp = interpolate.interp2d(data[:,6],data[:,0],data[:,12],kind="linear") # cubic doesn't work; why?
+        self.spl_x2p = interpolate.interp2d(data[:,6],data[:,0],np.log(data[:,11]),kind="linear") # cubic doesn't work; why?
 
-    def yp(self,obh2,dnnu):
-        #filename = "data/bbn.dat" # based on PArthENoPE taken from CLASS 
-        #data = np.loadtxt(filename)
-        #print(self.spl_yp(obh2,dnnu),interpolate.griddata(data[:,0:2],data[:,2],(obh2,dnnu),method="linear"))
-        #return self.spl_yp(obh2,dnnu)[0]
-        return float(self.spl_yp(obh2,dnnu))
+        data = np.loadtxt("data/bbn_100.txt")
+        self.spl_yp_standard_nnu = interpolate.interp1d(data[:,6],data[:,12],kind="linear") # cubic doesn't work; why?
+        self.spl_x2p_standard_nnu = interpolate.interp1d(data[:,6],np.log(data[:,11]),kind="linear") # cubic doesn't work; why?
+        
+    def yp(self,obh2,nnu):
+        if(abs(nnu-3.05)<5e-3):
+            return float(self.spl_yp_standard_nnu(obh2))
+        else:
+            return float(self.spl_yp(obh2,nnu))
+
+    def x2p(self,obh2,nnu):
+        if(abs(nnu-3.05)<5e-3):
+            return np.exp(float(self.spl_x2p_standard_nnu(obh2)))
+        else:
+            return np.exp(float(self.spl_x2p(obh2,nnu)))
 
 class MassiveNu:
 
@@ -164,7 +173,8 @@ class Background:
         self.odeh2 = 0.311
         self.de = DarkEnergy(wtype)
         self.bbn = BBN()
-        self.yp = 0.24714 # based on PRIMAT assuming obh2 = 0.02236, neff = 3.046
+        self.yp = self.bbn.yp(self.obh2,self.nu.nnu)
+        self.x2p = self.bbn.x2p(self.obh2,self.nu.nnu)
         
         # derived parameters
         self.SetDerivedParams()
@@ -177,7 +187,8 @@ class Background:
         self.nu.SetParams(params[3],params[4])
         self.onuh2_nomass = self.ogh2*7/8*(const.TCnuB/const.TCMB)**4*self.nu.nnu
         self.de.SetParams(params[5:])
-        self.yp = self.bbn.yp(self.obh2,self.nu.nnu-const.nnu_standard)
+        self.yp = self.bbn.yp(self.obh2,self.nu.nnu)
+        self.x2p = self.bbn.x2p(self.obh2,self.nu.nnu)
         
         if(self.verbose>0):
             print("\n# cosmological parameters:")
@@ -189,6 +200,7 @@ class Background:
             print(" neutrino masses [eV]:",self.nu.mass[:])
             print(" neutrino NR redshifts:",const.TCnuB/const.eV/self.nu.mass[:])
             print(" yp: %e"%self.yp)
+            print(" x2p: %e"%self.x2p)
             self.de.DumpParams()
             
     def dtauda(self,a):
@@ -285,5 +297,5 @@ class Background:
     def GetDerivedParams(self):
         H0 = self.H0()
         t_in_Gyr = integrate.quad(lambda x:x*self.dtauda(x),1e-3,1)[0]/const.Gyr
-        rsstar = self.SoundHorizon(1/(self.zstar+1))
-        return [H0,t_in_Gyr,rsstar]
+        rsstar_in_Mpc = self.SoundHorizon(1/(self.zstar+1))/const.Mpc
+        return [H0,t_in_Gyr,rsstar_in_Mpc]

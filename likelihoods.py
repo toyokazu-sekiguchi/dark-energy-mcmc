@@ -4,6 +4,27 @@ import numpy as np
 import SN
 from scipy import interpolate
 
+class DataBBN:
+
+    def __init__(self,verbose=0):
+        self.verbose = verbose
+        self.Y_heobs = 0.2449
+        self.Y_h2obs = 2.527
+        self.sigma_heobs = 0.0040
+        self.sigma_h2obs = 0.030
+        self.sigma_h2th = 0.0060
+        self.sigma_heth = 3.e-4
+
+    def LnLike (self,BG):
+        chi_yp = ( self.Y_heobs - BG.yp )**2 / ( self.sigma_heobs**2 + self.sigma_heth**2 )
+        chi_H2 = ( self.Y_h2obs - (BG.x2p/1.e-5) )**2 / ( self.sigma_h2obs**2 + self.sigma_h2th**2 )
+        if(self.verbose>0):
+            print(' yp:%f' %BG.yp)
+            print(' x2p:%f' %BG.x2p)
+            print(' chi_yp:%f' %chi_yp)
+            print(' chi_H2:%f' %chi_H2)
+        return -0.5*(chi_yp+chi_H2)
+
 class DataSNeIa:
 
     def __init__(self,verbose=0):
@@ -194,12 +215,13 @@ class DataCMB:
     
 class Likelihood:
 
-    def __init__(self,useBAO,useH0,useCMB,useSNeIa,dataBAO=None,verbose=0):
+    def __init__(self,useBAO,useH0,useCMB,useSNeIa,useBBN,dataBAO=None,verbose=0):
         self.useBAO = useBAO
         self.dataBAO = dataBAO
         self.useH0 = useH0
         self.useCMB = useCMB
         self.useSNeIa = useSNeIa
+        self.useBBN = useBBN
         self.verbose = verbose
 
         self.nlikes = 1
@@ -214,6 +236,9 @@ class Likelihood:
             self.nlikes += 1
         if(self.useSNeIa):
             self.SNeIa=DataSNeIa(self.verbose)
+            self.nlikes += 1
+        if(self.useBBN):
+            self.BBN=DataBBN(self.verbose)
             self.nlikes += 1
 
     def LnLike(self,BG,lnPprior):
@@ -259,6 +284,13 @@ class Likelihood:
             lnL[0] += lnL_SNeIa
 
         #t5 = time.time()
-        #print(t5-t0,t1-t0,t2-t1,t3-t2,t4-t3,t5-t4)
+        if(self.useBBN):
+            self.BBN.verbose = self.verbose
+            lnL_BBN = self.BBN.LnLike(BG)
+            lnL.append(lnL_BBN)
+            lnL[0] += lnL_BBN
+            
+        #t6 = time.time()
+        #print(t5-t0,t1-t0,t2-t1,t3-t2,t4-t3,t5-t4,t6-t5)
         return lnL
 

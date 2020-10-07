@@ -48,7 +48,7 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
   - `mnu`: Sum of neutrino mass in units of eV.
   - `neutrino_hierarchy`: Flag for neutrino mass hierarchy. 1 for normal, 0 for degenerate and -1 for inverted ones.
 * [LIKELIHOODS]
-  - `use_BAO`,`use_H0`, `use_CMB`, `use_SNeIa`: Flags for whether data is incorporated in likelihood calculation. They should be either `true` of `false`.
+  - `use_BAO`,`use_H0`, `use_CMB`, `use_SNeIa`,`use_BBN`: Flags for whether data is incorporated in likelihood calculation. They should be either `true` of `false`.
   - `data_BAO`: Choice of BAO data; see `data/bao.dataset` for data available.
 * [MCMC]
   - `obh2`, `odmh2`, `odeh2`,`w[0]`,..., `nnu`, `mnu`: When each parameter is varied in the parameter estimation, four numbers should be given in order: lower limit, upper limit, slope of prior distribution, initial fluctuations. When left as blank, corresponding parameter is fixed to the fiducial value. Commas ',' should be used to separate each item. Prior distribution of a each parameter $x$ is assumed to be in proportional to $\theta(x-x_{\rm min})\theta(x_{\rm max}-x)x^{n_x}$, where $x_{\rm min}$, $x_{\rm max}$, $n_x$ are the first three components in each line. 
@@ -59,7 +59,7 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
 ### Role of each python file:
 * `const.py`: Definition of units and constants
 * `background.py`: Calculation of cosmological background evolution. 
-* `likelihoods.py`: Calculation of likelihood function incorporating recent BAO (~~arXiv:1607.03155, arXiv:1801.03062, arXiv:1702.00176~~arXiv:2007.08991), direct Hubble measurement (arXiv:2001.03624) and CMB $\theta_*$ (arXiv:1807.06209).
+* `likelihoods.py`: Calculation of likelihood function incorporating recent BAO (~~arXiv:1607.03155, arXiv:1801.03062, arXiv:1702.00176~~arXiv:2007.08991), direct Hubble measurement (arXiv:2001.03624), CMB $\theta_* $ (arXiv:1807.06209) and light elements abundance.
 * `SN.py`: Likelihood code for type Ia supernovae, taken from CosmoMC (https://github.com/cmbant/CosmoMC).
 * `mcmc.py`: MCMC analysis based on Affine Invariant MCMC sampler (emcee). Parallelization is supported based on the multiprocessing python module. Restart functionarity is supported.
 * `driver.py`: Main function.
@@ -99,7 +99,9 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
 * September 25th, 2020
   - BAO likelihood function is replaced; now based on Alam et al. (https://arxiv.org/abs/2007.08991).
 * September 30th, 2020
-  - $r_{s*}$ is added in the derived parameters.
+  - $r_{s*}$[Mpc] is added in the derived parameters.
+ * October 7th, 2020
+  - BBN calculation and likelihood for light elements abundance are incorporated (based on Okamatsu-kun's coding).
   
 # To-do list
 - [ ] Visualization of reconstructed EoS as function of $a$.

@@ -8,24 +8,28 @@ class BBN:
     def __init__(self):
         #Replaced with data from Omakatsu-kun
         data = np.loadtxt("data/data_100.txt")
-        self.spl_yp = interpolate.interp2d(data[:,6],data[:,0],data[:,12],kind="linear") # cubic doesn't work; why?
-        self.spl_x2p = interpolate.interp2d(data[:,6],data[:,0],np.log(data[:,11]),kind="linear") # cubic doesn't work; why?
+        u = data[0:10000:100,0] # Nnu
+        v = data[0:100,6] # omegabh2
+        yp = np.reshape(data[:,12],[100,100]) # helium
+        x2p = np.log(np.reshape(data[:,11],[100,100])) # deuterium
+        self.spl_yp = interpolate.RectBivariateSpline(u,v,yp)
+        self.spl_x2p = interpolate.RectBivariateSpline(u,v,x2p)
 
         data = np.loadtxt("data/bbn_100.txt")
-        self.spl_yp_standard_nnu = interpolate.interp1d(data[:,6],data[:,12],kind="linear") # cubic doesn't work; why?
-        self.spl_x2p_standard_nnu = interpolate.interp1d(data[:,6],np.log(data[:,11]),kind="linear") # cubic doesn't work; why?
+        self.spl_yp_standard_nnu = interpolate.interp1d(data[:,6],data[:,12],kind="cubic")
+        self.spl_x2p_standard_nnu = interpolate.interp1d(data[:,6],np.log(data[:,11]),kind="cubic")
         
     def yp(self,obh2,nnu):
         if(abs(nnu-3.05)<5e-3):
             return float(self.spl_yp_standard_nnu(obh2))
         else:
-            return float(self.spl_yp(obh2,nnu))
+            return float(self.spl_yp(nnu,obh2))
 
     def x2p(self,obh2,nnu):
         if(abs(nnu-3.05)<5e-3):
             return np.exp(float(self.spl_x2p_standard_nnu(obh2)))
         else:
-            return np.exp(float(self.spl_x2p(obh2,nnu)))
+            return np.exp(float(self.spl_x2p(nnu,obh2)))
 
 class MassiveNu:
 
@@ -180,13 +184,14 @@ class Background:
         self.SetDerivedParams()
         
     def SetParams(self,params):
-        #params is an array containing [obh2,odmh2,odeh2,Gamma_Gyr,mratio,nnu,mnu]
+        #params is an array containing [obh2,odmh2,odeh2,okh2,nnu,mnu,w[0],w[1],w[2],w[3]]
         self.obh2 = params[0]
         self.odmh2 = params[1]
         self.odeh2 = params[2]
-        self.nu.SetParams(params[3],params[4])
+        self.okh2 = params[3]
+        self.nu.SetParams(params[4],params[5])
         self.onuh2_nomass = self.ogh2*7/8*(const.TCnuB/const.TCMB)**4*self.nu.nnu
-        self.de.SetParams(params[5:])
+        self.de.SetParams(params[6:])
         self.yp = self.bbn.yp(self.obh2,self.nu.nnu)
         self.x2p = self.bbn.x2p(self.obh2,self.nu.nnu)
         
@@ -196,6 +201,7 @@ class Background:
             print(" omega_nu*h^2 (no mass): %e"%self.onuh2_nomass)
             print(" omega_dm*h^2 (no decay): %e"%self.odmh2)
             print(" omega_de*h^2: %e"%self.odeh2)
+            print(" omega_k*h^2: %e"%self.okh2)
             print(" neutrino mass hierarchy [1:NH,-1:IH],0:NH]:",self.nu.hierarchy)
             print(" neutrino masses [eV]:",self.nu.mass[:])
             print(" neutrino NR redshifts:",const.TCnuB/const.eV/self.nu.mass[:])
@@ -204,7 +210,7 @@ class Background:
             self.de.DumpParams()
             
     def dtauda(self,a):
-        x = 1/np.sqrt(self.ogh2+self.onuh2_nomass*np.average(self.nu.Rho(a))+(self.obh2+self.odmh2)*a+self.odeh2*a**4*self.de.Rho(a))
+        x = 1/np.sqrt(self.ogh2+self.onuh2_nomass*np.average(self.nu.Rho(a))+(self.obh2+self.odmh2)*a+self.okh2*a*a+self.odeh2*a**4*self.de.Rho(a))
         return x/const.BigH
         
     def H0(self):
@@ -212,7 +218,19 @@ class Background:
         
     def DeltaTau(self,a1,a2):
         return integrate.quad(self.dtauda,a1,a2)[0]
-
+    
+    def TransverseDistance(self,a):
+        chi = integrate.quad(self.dtauda,a,1)[0]*const.c
+        K = np.sqrt(abs(self.okh2))*const.BigH/const.c
+        x = chi*K
+        if(x<0.5): # almost flat; accuracy of O(1e-8)
+            x2=np.sign(self.okh2)*x*x
+            return chi*(1+x2/6*(1+x2/20*(1+x2/42*(1+x2/72))))
+        elif(self.okh2>0): # open
+            return np.sinh(x)/K
+        else: # closed
+            return np.sin(x)/K
+    
     def drsda(self,a):
         cs = np.sqrt(1/3/(1+self.R(a)))*const.c
         return cs*self.dtauda(a)

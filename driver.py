@@ -1,4 +1,5 @@
 import sys
+import os
 import const
 import background
 import numpy as np
@@ -18,12 +19,16 @@ def main():
 
     section = "OUTPUT"
     root = Ini.ReadString(section,"root")
+    rootdir = os.path.dirname(root)
+    if not os.path.exists(rootdir):
+        os.makedirs(rootdir)
+        print(' warning: root directory is created')
     Ini.Dump(root+"_params.ini")
-    
+
     # model calculation with fiducial parameters
     section = "COSMOLOGY"
     BG = background.Background(Ini.ReadInt(section,"neutrino_hierarchy"),Ini.ReadInt(section,"wtype"),verbose=1)
-    paramsfid = np.array([Ini.ReadFloat(section,"obh2"),Ini.ReadFloat(section,"odmh2"),Ini.ReadFloat(section,"odeh2"),
+    paramsfid = np.array([Ini.ReadFloat(section,"obh2"),Ini.ReadFloat(section,"odmh2"),Ini.ReadFloat(section,"odeh2"),Ini.ReadFloat(section,"okh2"),
                           Ini.ReadFloat(section,"nnu"),Ini.ReadFloat(section,"mnu"),Ini.ReadFloat(section,"w[0]"),
                           Ini.ReadFloat(section,"w[1]"),Ini.ReadFloat(section,"w[2]"),Ini.ReadFloat(section,"w[3]")])
     BG.SetParams(paramsfid)
@@ -51,7 +56,7 @@ def main():
                   Ini.ReadFloatArray(section,"w[1]"),Ini.ReadFloatArray(section,"w[2]"),Ini.ReadFloatArray(section,"w[3]")]
     map_varied = np.array([i for i in range(len(paramrange)) if len(paramrange[i]>0)])
     range_varied = np.array([paramrange[i] for i in map_varied])
-    driver = mcmc.MCMC(paramsfid,Ini.ReadBoolean(section,"parallel"))
+    driver = mcmc.MCMC(paramsfid,Ini.ReadBoolean(section,"parallel"),nprocesses=Ini.ReadInt(section,'nprocesses'))
     driver.SetParams(map_varied,range_varied,Ini.ReadInt(section,"nwalkers"),verbose=1)
     chain = root+".h5"
     driver.Run(chain,Ini.ReadInt(section,"nsteps"),BG,LF)

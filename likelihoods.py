@@ -139,7 +139,7 @@ class DataBAO:
             type = self.types[j]
             z = self.zs[j]
             a = 1/(z+1)
-            DM = BG.DeltaTau(a,1)*const.c
+            DM = BG.TransverseDistance(a) #BG.DeltaTau(a,1)*const.c
             DH = const.c*a*a*BG.dtauda(a)
             if(type==1):
                 DV = (z*DM*DM*DH)**(1/3)
@@ -204,7 +204,7 @@ class DataCMB:
         astar = 1/(1+BG.zstar)
         rstar = BG.SoundHorizon(astar)
         rdiff = BG.SilkScale(astar)
-        DA = BG.DeltaTau(astar,1)*const.c
+        DA = BG.TransverseDistance(astar) #BG.DeltaTau(astar,1)*const.c
         theta = rstar/DA
         if(self.verbose>0):
             print(' z_*:%f, r_*[Mpc]:%f'%(BG.zstar,rstar/const.Mpc))

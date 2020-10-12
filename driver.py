@@ -28,9 +28,10 @@ def main():
     # model calculation with fiducial parameters
     section = "COSMOLOGY"
     BG = background.Background(Ini.ReadInt(section,"neutrino_hierarchy"),Ini.ReadInt(section,"wtype"),verbose=1)
-    paramsfid = np.array([Ini.ReadFloat(section,"obh2"),Ini.ReadFloat(section,"odmh2"),Ini.ReadFloat(section,"odeh2"),Ini.ReadFloat(section,"okh2"),
-                          Ini.ReadFloat(section,"nnu"),Ini.ReadFloat(section,"mnu"),Ini.ReadFloat(section,"w[0]"),
-                          Ini.ReadFloat(section,"w[1]"),Ini.ReadFloat(section,"w[2]"),Ini.ReadFloat(section,"w[3]")])
+    paramsfid = np.array([Ini.ReadFloat(section,"obh2"),Ini.ReadFloat(section,"odmh2"),Ini.ReadFloat(section,"odeh2"),
+                          Ini.ReadFloat(section,"okh2"),Ini.ReadFloat(section,"nnu"),Ini.ReadFloat(section,"mnu"),
+                          Ini.ReadFloat(section,"w[0]"),Ini.ReadFloat(section,"w[1]"),Ini.ReadFloat(section,"w[2]"),
+                          Ini.ReadFloat(section,"w[3]")])
     BG.SetParams(paramsfid)
 
     # test
@@ -52,8 +53,9 @@ def main():
     section ='MCMC'
     BG.verbose  = LF.verbose  = 0
     paramrange = [Ini.ReadFloatArray(section,"obh2"),Ini.ReadFloatArray(section,"odmh2"),Ini.ReadFloatArray(section,"odeh2"),
-                  Ini.ReadFloatArray(section,"nnu"),Ini.ReadFloatArray(section,"mnu"),Ini.ReadFloatArray(section,"w[0]"),
-                  Ini.ReadFloatArray(section,"w[1]"),Ini.ReadFloatArray(section,"w[2]"),Ini.ReadFloatArray(section,"w[3]")]
+                  Ini.ReadFloatArray(section,"okh2"),Ini.ReadFloatArray(section,"nnu"),Ini.ReadFloatArray(section,"mnu"),
+                  Ini.ReadFloatArray(section,"w[0]"),Ini.ReadFloatArray(section,"w[1]"),Ini.ReadFloatArray(section,"w[2]"),
+                  Ini.ReadFloatArray(section,"w[3]")]
     map_varied = np.array([i for i in range(len(paramrange)) if len(paramrange[i]>0)])
     range_varied = np.array([paramrange[i] for i in map_varied])
     driver = mcmc.MCMC(paramsfid,Ini.ReadBoolean(section,"parallel"),nprocesses=Ini.ReadInt(section,'nprocesses'))

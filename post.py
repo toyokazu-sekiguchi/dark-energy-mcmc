@@ -6,7 +6,7 @@ import emcee
 from getdist import plots,MCSamples
 
 burninfrac = 0.3
-minthinned = 250
+minthinned = 50
 
 class PostProcess():
 

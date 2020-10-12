@@ -22,10 +22,13 @@ def LnPost(params_varied,*args):
 class MCMC():
     import time
     
-    def __init__(self,params_fid,parallel=True):
+    def __init__(self,params_fid,parallel=True,nprocesses=1):
+        from multiprocessing import cpu_count
         self.pf = np.array(params_fid)
         self.parallel = parallel
-        
+        if(self.parallel):
+            self.nprocesses = min(cpu_count(),nprocesses) if(nprocesses>0) else cpu_count()
+    
     def SetParams(self,map_varied,range_varied,nwalkers,verbose=0):
         self.nv = len(map_varied)
         self.mapv = np.array(map_varied)
@@ -66,8 +69,7 @@ class MCMC():
         self.nblobs = len(dtype)
 
         if(self.parallel):
-            #import multiprocessing as mp
-            from multiprocessing import Pool,cpu_count
+            from multiprocessing import Pool
             import os
             
             # following classes are required to be created so that LnPost should be pickable
@@ -80,13 +82,12 @@ class MCMC():
             # Intel MKL should be serialized as instructed in emcee userguide
             os.environ["OMP_NUM_THREADS"] = "1"
             os.environ["OBJC_DISABLE_INITIALIZE_FORK_SAFETY"] = "YES"
-                
-            with Pool() as pool:
+            
+            with Pool(processes=self.nprocesses) as pool:
                 
                 self.sampler = emcee.EnsembleSampler(MC0.nwalkers,MC0.nv,LnPost,args=(MC0,BG0,LF0),backend=backend,blobs_dtype=dtype,pool=pool)
-                ncpu = cpu_count()
                 print(" parallel run")
-                print(" {0} CPUs".format(ncpu))
+                print(" {0} processes".format(self.nprocesses))
                 self.sampler.run_mcmc(p0,nsteps,progress=True)
         else:
             

@@ -37,7 +37,7 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
 * [OUTPUT]
   - `root`: Chacters specifying output prefix.
 * [COSMOLOGY]
-  - `obh2`, `odmh2`, `odeh2`: Density parameters $\Omega_i h^2$ of baryon, dark matter (assuming no decay) and dark energy.
+  - `obh2`, `odmh2`, `odeh2`,`okh2`: Density parameters $\Omega_i h^2$ of baryon, dark matter (assuming no decay), dark energy and curvature.
   - `wtype`: Integer specifying a parameterization of dark energy equation of state (EoS). Currently the following parameterizations are supported.
     - `wtype = 0`: The CPL parameterization $w(a) = w_0+w_a(1-a)$.
     - `100> wtype >= 10`: Binned w(a). Suppose i and j are the tens and ones places of `wtype` (i.e. `wtype` = 10*i+j), $1>=a>0$ is divided uniformly in $i^\sqrt{a}$ into $j+1$ points. That is, provided fixed $j$, larger $i$ gives a finer binning around $a=1$.
@@ -51,7 +51,7 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
   - `use_BAO`,`use_H0`, `use_CMB`, `use_SNeIa`,`use_BBN`: Flags for whether data is incorporated in likelihood calculation. They should be either `true` of `false`.
   - `data_BAO`: Choice of BAO data; see `data/bao.dataset` for data available.
 * [MCMC]
-  - `obh2`, `odmh2`, `odeh2`,`w[0]`,..., `nnu`, `mnu`: When each parameter is varied in the parameter estimation, four numbers should be given in order: lower limit, upper limit, slope of prior distribution, initial fluctuations. When left as blank, corresponding parameter is fixed to the fiducial value. Commas ',' should be used to separate each item. Prior distribution of a each parameter $x$ is assumed to be in proportional to $\theta(x-x_{\rm min})\theta(x_{\rm max}-x)x^{n_x}$, where $x_{\rm min}$, $x_{\rm max}$, $n_x$ are the first three components in each line. 
+  - `obh2`, `odmh2`, `odeh2`,`okh2`,`w[0]`,..., `nnu`, `mnu`: When each parameter is varied in the parameter estimation, four numbers should be given in order: lower limit, upper limit, slope of prior distribution, initial fluctuations. When left as blank, corresponding parameter is fixed to the fiducial value. Commas ',' should be used to separate each item. Prior distribution of a each parameter $x$ is assumed to be in proportional to $\theta(x-x_{\rm min})\theta(x_{\rm max}-x)x^{n_x}$, where $x_{\rm min}$, $x_{\rm max}$, $n_x$ are the first three components in each line. 
   - `nwalkers`: Number of walkers in affine invariant MCMC sampler. This should be at least twice the number of varied parameters.
   - `nsteps`: Number of steps for MCMC analysis
   - `parallel`: If `true`, parallelization is implemented in the MCMC calculation.
@@ -69,6 +69,7 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
 * `Pantheon/*`: Pantheon SNeIa data.
 * `jla*`: JLA SNeIa data.
 * `bao.dataset`: BAO data.
+
 ## Stage 2: Postprocessing
 
 ### Basic usage:
@@ -82,13 +83,13 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
   - `postroot`: This specifies output prefix.
   - `paramnames`: Array of parameter names varied in chains. Commas separate items.
   - `paramlabels`: Array of parameter labels in LaTeX format. They are adopted in plotting. Commas separate items.
-  - `dparamnames`: Array of derived parameter names in chains. Commas separate items. A Derived paraemters are either of `H0`, `Age`, `odm0`, `odm1`, `odm2`.
+  - `dparamnames`: Array of derived parameter names in chains. Commas separate items. A Derived paraemters are either of `H0`, `Age`, `rsstar`.
   - `dparamnames`: Array of derived parameter labels in chains. They are adopted in plotting. Commas separate items.
   - `chains`: Array of chain file(s) to be analysed. Commas separate items.
   - `chainlabels`: Array of chain label(s). They are adopted in plotting. Commas separate items.
   
 # Notes
-* Flatness is assumed.
+* ~~Flatness is assumed.~~
 * Neutrinos are assumed to consist of three mass eigenstates.
 * 4He abundance $Y_p(\omega_b, N_\nu)$ is fitted with a look-up table in `BBN.dat`, which is taken from CLASS, which are originally obtained using the PArthENoPE code (http://parthenope.na.infn.it).
 * Recombination history is computed based on HyReC (https://pages.jh.edu/~yalihai1/hyrec/hyrec.html). Hyrec in our code is modified from the original one so that massive neutrinos are incorporated and interface to Python is realized by SWIG.
@@ -100,8 +101,10 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
   - BAO likelihood function is replaced; now based on Alam et al. (https://arxiv.org/abs/2007.08991).
 * September 30th, 2020
   - $r_{s*}$[Mpc] is added in the derived parameters.
- * October 7th, 2020
+* October 7th, 2020
   - BBN calculation and likelihood for light elements abundance are incorporated (based on Okamatsu-kun's coding).
+* October 12nd, 2020
+  - Non-flat universe is now supported and $\omega_k=\Omega_k h^2$ can be varied.
   
 # To-do list
 - [ ] Visualization of reconstructed EoS as function of $a$.

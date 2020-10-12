@@ -91,7 +91,7 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
 # Notes
 * ~~Flatness is assumed.~~
 * Neutrinos are assumed to consist of three mass eigenstates.
-* 4He abundance $Y_p(\omega_b, N_\nu)$ is fitted with a look-up table in `BBN.dat`, which is taken from CLASS, which are originally obtained using the PArthENoPE code (http://parthenope.na.infn.it).
+* ~~4He abundance $Y_p(\omega_b, N_\nu)$ is fitted with a look-up table in `BBN.dat`, which is taken from CLASS, which are originally obtained using the PArthENoPE code (http://parthenope.na.infn.it).~~ Implemented by Okamatsu-kun, BBN prediction on the 4He and deuterium abundances as well as likelihood function based on light elements abundance data are now supported.
 * Recombination history is computed based on HyReC (https://pages.jh.edu/~yalihai1/hyrec/hyrec.html). Hyrec in our code is modified from the original one so that massive neutrinos are incorporated and interface to Python is realized by SWIG.
 
 # Version history

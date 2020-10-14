@@ -39,7 +39,7 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
 * [COSMOLOGY]
   - `obh2`, `odmh2`, `odeh2`,`okh2`: Density parameters $\Omega_i h^2$ of baryon, dark matter (assuming no decay), dark energy and curvature.
   - `wtype`: Integer specifying a parameterization of dark energy equation of state (EoS). Currently the following parameterizations are supported.
-    Examples:
+    [[Examples]]:
     - `wtype = 0`: The CPL parameterization $w(a) = w_0+w_a(1-a)$.
     - `100> wtype >= 10`: Binned w(a). Suppose i and j are the tens and ones places of `wtype` (i.e. `wtype` = 10*i+j), $1>=a>0$ is divided uniformly in $i^\sqrt{a}$ into $j+1$ points. That is, provided fixed $j$, larger $i$ gives a finer binning around $a=1$.
       - wtype=11 (i=1,j=1): i=1 means uniform binning in $a$ and and j=1 means the number of bins is 2; therefore binning is (0,0.5],(0.5,1].

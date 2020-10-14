@@ -41,6 +41,8 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
   - `wtype`: Integer specifying a parameterization of dark energy equation of state (EoS). Currently the following parameterizations are supported.
     - `wtype = 0`: The CPL parameterization $w(a) = w_0+w_a(1-a)$.
     - `100> wtype >= 10`: Binned w(a). Suppose i and j are the tens and ones places of `wtype` (i.e. `wtype` = 10*i+j), $1>=a>0$ is divided uniformly in $i^\sqrt{a}$ into $j+1$ points. That is, provided fixed $j$, larger $i$ gives a finer binning around $a=1$.
+      - wtype=11 (i=1,j=1): i=1 means uniform binning in $a$ and and j=1 means the number of bins is 2; therefore binning is (0,0.5],(0.5,1].
+      - wtype=23 (i=2,j=3): i=1 means uniform binning in $\sqrt{a}$ and and j=3 means the number of bins is 4; therefore binning is (0,(1/4)^2],((1/4)^2,(1/2)^2], ((1/2)^2,(3/4)^2],((3/4)^2,(1)^2].      
   - `w[0]`, `w[1]`, ...: EoS parameters. 
     - `w[0]`=$w_0$ and `w[1]`=$w_a$ when `wtype = 0`.
     - Array (`w[0]`,w[1],..., `w[j]`) gives the binned $w(a)$. `w[0]` (`w[j]`) corresponds to the bin with largest (smallest) $a$.    

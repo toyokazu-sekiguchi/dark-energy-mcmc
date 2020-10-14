@@ -67,7 +67,7 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
 * `driver.py`: Main function.
 
 ### Files in `/data` directories:
-* `bbn.dat`: Lookup table of BBN $Y_p$.
+* ~~`bbn.dat`: Lookup table of BBN $Y_p$.~~ `bbn_100.txt` and `data_100.txt`: Updated Lookup tables of BBN $Y_p$ and $D/H$ by Okamatsu-kun.
 * `Pantheon/*`: Pantheon SNeIa data.
 * `jla*`: JLA SNeIa data.
 * `bao.dataset`: BAO data.
@@ -85,7 +85,7 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
   - `postroot`: This specifies output prefix.
   - `paramnames`: Array of parameter names varied in chains. Commas separate items.
   - `paramlabels`: Array of parameter labels in LaTeX format. They are adopted in plotting. Commas separate items.
-  - `dparamnames`: Array of derived parameter names in chains. Commas separate items. A Derived paraemters are either of `H0`, `Age`, `rsstar`.
+  - `dparamnames`: Array of derived parameter names in chains. Commas separate items. Derived paraemters can be chosen from `H0`, `Om`, `Ode`, `Ok`, `Age`, `zstar`, `rsstar`, `DMstar`, `thetastar`, `zdrag`, `rsdrag`.
   - `dparamnames`: Array of derived parameter labels in chains. They are adopted in plotting. Commas separate items.
   - `chains`: Array of chain file(s) to be analysed. Commas separate items.
   - `chainlabels`: Array of chain label(s). They are adopted in plotting. Commas separate items.
@@ -107,6 +107,9 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
   - BBN calculation and likelihood for light elements abundance are incorporated (based on Okamatsu-kun's coding).
 * October 12nd, 2020
   - Non-flat universe is now supported and $\omega_k=\Omega_k h^2$ can be varied.
-  
+* October 14th, 2020
+  - Available derived parameters are enhanced.
+  - Root directory is now automatically created if it is missing.
+
 # To-do list
 - [ ] Visualization of reconstructed EoS as function of $a$.

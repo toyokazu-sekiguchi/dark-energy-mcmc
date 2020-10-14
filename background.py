@@ -180,9 +180,6 @@ class Background:
         self.yp = self.bbn.yp(self.obh2,self.nu.nnu)
         self.x2p = self.bbn.x2p(self.obh2,self.nu.nnu)
         
-        # derived parameters
-        self.SetDerivedParams()
-        
     def SetParams(self,params):
         #params is an array containing [obh2,odmh2,odeh2,okh2,nnu,mnu,w[0],w[1],w[2],w[3]]
         self.obh2 = params[0]
@@ -307,13 +304,31 @@ class Background:
     
     def SilkScale(self,a):
         return np.sqrt(integrate.quad(self.drdiff2da,0,a)[0])
-
-    def SetDerivedParams(self):
-        self.ndparams = 3
-        self.dparams = ["H0","Age","rs*"]
+    
+    def SetDerivedParams(self,with_therm=False):
+        self.dparams = ["H0","Om","Ode","Ok","Age"]
+        self.with_therm = with_therm
+        if(self.with_therm):
+            self.dparams = self.dparams+["z*","rs*","DM*","theta*","zdrag","rsgrag"]
+        self.ndparams = len(self.dparams)
         
     def GetDerivedParams(self):
         H0 = self.H0()
+        Om = (self.obh2+self.odmh2)/(H0*H0)*10000
+        Ode = self.odeh2/(H0*H0)*10000
+        Ok = self.okh2/(H0*H0)*10000
         t_in_Gyr = integrate.quad(lambda x:x*self.dtauda(x),1e-3,1)[0]/const.Gyr
-        rsstar_in_Mpc = self.SoundHorizon(1/(self.zstar+1))/const.Mpc
-        return [H0,t_in_Gyr,rsstar_in_Mpc]
+        
+        if(self.with_therm):
+            zstar = self.zstar
+            rsstar_in_Mpc = self.SoundHorizon(1/(zstar+1))/const.Mpc
+            DMstar_in_Gpc = self.TransverseDistance(1/(zstar+1))/const.Gpc
+            thetastar = (rsstar_in_Mpc*const.Mpc)/(DMstar_in_Gpc*const.Gpc)
+            
+            zdrag = self.zstar
+            rsdrag_in_Mpc = self.SoundHorizon(1/(zdrag+1))/const.Mpc
+        
+            return [H0,Om,Ode,Ok,t_in_Gyr,
+                    zstar,rsstar_in_Mpc,DMstar_in_Gpc,thetastar,zdrag,rsdrag_in_Mpc]
+        else:
+            return [H0,Om,Ode,Ok,t_in_Gyr]

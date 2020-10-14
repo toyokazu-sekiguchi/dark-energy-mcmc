@@ -64,6 +64,7 @@ class MCMC():
             dtype.append(("lnL_SNeIa",float))
         if(LF.useBBN):
             dtype.append(("lnL_BBN",float))
+        BG.SetDerivedParams(LF.useBAO or LF.useCMB)
         for i in range(BG.ndparams):
             dtype.append((BG.dparams[i],float))
         self.nblobs = len(dtype)
@@ -74,6 +75,7 @@ class MCMC():
             
             # following classes are required to be created so that LnPost should be pickable
             BG0 = background.Background(BG.nu.hierarchy,BG.de.wtype,verbose=0)
+            BG0.SetDerivedParams(BG.with_therm)
             LF0 = likelihoods.Likelihood(LF.useBAO,LF.useH0,LF.useCMB,LF.useSNeIa,LF.useBBN,LF.dataBAO,verbose=0)
             MC0 = MCMC(self.pf)
             MC0.SetParams(self.mapv,self.rangev,self.nwalkers,verbose=0)

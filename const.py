@@ -7,6 +7,7 @@ from scipy import special
 km = 1e3 # km [m]
 pc = 3.085675e16 # parsec [m]
 Mpc = 1e6*pc
+Gpc = 1e3*Mpc
 yr = 3.1557600e7 # year [s]
 Gyr = 1e9*yr
 

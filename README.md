@@ -1,5 +1,7 @@
+| Author | Toyokazu Sekiguchi |
+| Description |Code for MCMC parameter estimation of dark energy models from cosmographical data.|
+
 # Description
-Code for MCMC parameter estimation of dark energy models from cosmographical data.
 
 # Prerequisites (vesion usued in development)
 * Python3 (3.7)

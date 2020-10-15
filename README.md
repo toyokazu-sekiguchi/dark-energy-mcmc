@@ -1,6 +1,12 @@
-| abc | defghi |
-:-: | -----------:
-bar | baz
+:CosmoChord:  PolyChord + CosmoMC for cosmological parameter estimation and evidence calculation
+:Author: Will Handley
+:ForkedFrom: https://github.com/cmbant/CosmoMC
+:Homepage: http://polychord.co.uk
+
+
+| **Author** | Toyokazu Sekiguchi |
+| **Description** | Code for MCMC parameter estimation of dark energy models from cosmographical data |
+
 
 # Description
 

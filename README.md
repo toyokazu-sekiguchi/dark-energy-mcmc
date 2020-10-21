@@ -112,7 +112,7 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
   - Available derived parameters are enhanced.
   - Root directory is now automatically created if it is missing.
 * Octobar 21st, 2020
-  - Minor bugs fixed in `post.py`
+  - Minor bugs fixed in `post.py`.
 
 # To-do list
 - [ ] Visualization of reconstructed EoS as function of $a$.

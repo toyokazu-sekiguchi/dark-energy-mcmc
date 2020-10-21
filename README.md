@@ -87,7 +87,7 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
   - `paramnames`: Array of parameter names varied in chains. Commas separate items.
   - `paramlabels`: Array of parameter labels in LaTeX format. They are adopted in plotting. Commas separate items.
   - `dparamnames`: Array of derived parameter names in chains. Commas separate items. Derived paraemters can be chosen from `H0`, `Om`, `Ode`, `Ok`, `Age`, `zstar`, `rsstar`, `DMstar`, `thetastar`, `zdrag`, `rsdrag`.
-  - `dparams`: Array of derived parameter labels in chains. They are adopted in plotting. Commas separate items.
+  - `dparamlabels`: Array of derived parameter labels in chains. They are adopted in plotting. Commas separate items.
   - `chains`: Array of chain file(s) to be analysed. Commas separate items.
   - `chainlabels`: Array of chain label(s). They are adopted in plotting. Commas separate items.
   

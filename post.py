@@ -6,7 +6,7 @@ import emcee
 from getdist import plots,MCSamples
 
 burninfrac = 0.3
-minthinned = 50
+minthinned = 100
 
 class PostProcess():
 
@@ -89,9 +89,9 @@ class PostProcess():
                 burnin = int(burninfrac*nflat)
             print(" burn-in: {0}".format(burnin))
             print(" burn-in fraction: {0}".format(burnin/nflat))
-            thin = int(0.5*np.min(tau))
+            thin = int(0.5*np.max(tau))
             if((nflat-burnin)/thin<minthinned):
-                print(" warning: trying reduced thin")
+                print(" WARNING: chains seem unconverged; trying reduced thin")
                 thin = int((nflat-burnin)//minthinned)
             print(" thin: {0}".format(thin))
             print(" thinned sample number: {0}".format(int((nflat-burnin)/thin)))

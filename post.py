@@ -136,9 +136,36 @@ def main():
     PP = PostProcess(chains,chainlabels,names,labels,dnames,dlabels)
     PP.ReadChains()
 
-    # triangle plots
-    g = plots.getSubplotPlotter()
-    g.triangle_plot(PP.getdist_samples,filled=True)
-    g.export(postroot+"_triangle.pdf")
+    nplots = Ini.ReadInt(section,"num_plots")
+    for i in range(nplots):
+        key = "plot_settings[{:d}]".format(i)
+        plstr = Ini.ReadString(section,key).split(";")
+        print(plstr)
+        if(plstr[0]=="1d"):# 1d plots
+            plparams = plstr[1].split(",")
+            g = plots.getSubplotPlotter()
+            g.plots_1d(PP.getdist_samples,plparams,filled=True)
+            g.export(postroot+"_{:d}_1d.pdf".format(i))
+        elif(plstr[0]=="tri"):
+            # 2d triangler plots
+            plparams = plstr[1].split(",")
+            g = plots.getSubplotPlotter()
+            g.triangle_plot(PP.getdist_samples,plparams,filled=True)
+            g.export(postroot+"_{:d}_tri.pdf".format(i))
+        elif(plstr[0]=="rect"):
+            # 2d rectangular plots
+            plparams_row = plstr[1].split(",")
+            plparams_column = plstr[2].split(",")
+            g = plots.getSubplotPlotter()
+            g.rectangle_plot(plparams_row,plparams_column,roots=PP.getdist_samples,filled=True)
+            g.export(postroot+"_{:d}_rect.pdf".format(i))
+        else:
+            print("not supported; the 1st key of plot_settings")
+            sys.exit(1)
+
+        ## triangle plots
+        #g = plots.getSubplotPlotter()
+        #g.triangle_plot(PP.getdist_samples,filled=True)
+        #g.export(postroot+"_triangle.pdf")
     
 main()

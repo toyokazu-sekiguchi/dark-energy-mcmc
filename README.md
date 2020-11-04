@@ -78,7 +78,7 @@ This first calculates evolution in the fiducial model and MCMC run afterwords. M
 ### Basic usage:
 `python3 post.py dist.ini`
 
-This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints as well as triangle plot of posteior distributions.
+This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints as well as a varity of plots of posteior distributions.
 
 ### Description of parameter files
 `dist.ini` specifies 
@@ -95,7 +95,7 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
     **Examples**:
     - For a 1d plot with `odmh2`, `odeh2` and `H0`: `1d;odmh2,odeh2,H0`
     - For a 2d triangle plot with `odmh2`, `odeh2` and `H0`: `tri;odmh2,odeh2,H0`
-    - For a 2d rectangle plot with `odmh2` and `odeh2` in row and `H0` in column: `rect;odmh2,odeh2;H0`
+    - For a 2d rectangle plot with `odmh2` and `odeh2` in row and `H0` in column: `rect;odmh2,odeh2;H0`  
     Note that you should not insert any tab, space etc.
  
 # Notes

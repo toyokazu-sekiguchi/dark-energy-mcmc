@@ -138,7 +138,7 @@ def main():
 
     nplots = Ini.ReadInt(section,"num_plots")
     for i in range(nplots):
-        key = "plot_settings[{:d}]".format(i)
+        key = "plot_setting[{:d}]".format(i)
         plstr = Ini.ReadString(section,key).split(";")
         print(plstr)
         if(plstr[0]=="1d"):# 1d plots
@@ -160,7 +160,7 @@ def main():
             g.rectangle_plot(plparams_row,plparams_column,roots=PP.getdist_samples,filled=True)
             g.export(postroot+"_{:d}_rect.pdf".format(i))
         else:
-            print("not supported; the 1st key of plot_settings")
+            print("not supported; the 1st key of plot_setting should either 1d, tri, rect.")
             sys.exit(1)
 
         ## triangle plots

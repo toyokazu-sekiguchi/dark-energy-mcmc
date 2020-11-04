@@ -90,7 +90,14 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
   - `dparamlabels`: Array of derived parameter labels in chains. They are adopted in plotting. Commas separate items.
   - `chains`: Array of chain file(s) to be analysed. Commas separate items.
   - `chainlabels`: Array of chain label(s). They are adopted in plotting. Commas separate items.
-  
+  - `num_plots`: The number of plots
+  - `plot_setting[i]`: The settings for *i*-th plots. See examles below.
+    **Examples**:
+    - For a 1d plot with `odmh2`, `odeh2` and `H0`: `1d;odmh2,odeh2,H0`
+    - For a 2d triangle plot with `odmh2`, `odeh2` and `H0`: `tri;odmh2,odeh2,H0`
+    - For a 2d rectangle plot with `odmh2` and `odeh2` in row and `H0 in column: `rect;odmh2,odeh2;H0`
+    Note that you should not insert any tab, space etc.
+ 
 # Notes
 * ~~Flatness is assumed.~~
 * Neutrinos are assumed to consist of three mass eigenstates.
@@ -113,6 +120,8 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
   - Root directory is now automatically created if it is missing.
 * Octobar 21st, 2020
   - Minor bugs fixed in `post.py`.
+* Nov 4th, 2020
+  - The variety of plots are enhanced. Now 1d, 2d triangle and 2d rectangle plots are available.
 
 # To-do list
 - [ ] Visualization of reconstructed EoS as function of $a$.

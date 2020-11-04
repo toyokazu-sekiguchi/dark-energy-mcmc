@@ -91,11 +91,11 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
   - `chains`: Array of chain file(s) to be analysed. Commas separate items.
   - `chainlabels`: Array of chain label(s). They are adopted in plotting. Commas separate items.
   - `num_plots`: The number of plots
-  - `plot_setting[i]`: The settings for *i*-th plots. See examles below.
+  - `plot_setting[i]`: The settings for *i*-th plots. See examles below.  
     **Examples**:
     - For a 1d plot with `odmh2`, `odeh2` and `H0`: `1d;odmh2,odeh2,H0`
     - For a 2d triangle plot with `odmh2`, `odeh2` and `H0`: `tri;odmh2,odeh2,H0`
-    - For a 2d rectangle plot with `odmh2` and `odeh2` in row and `H0 in column: `rect;odmh2,odeh2;H0`
+    - For a 2d rectangle plot with `odmh2` and `odeh2` in row and `H0` in column: `rect;odmh2,odeh2;H0`
     Note that you should not insert any tab, space etc.
  
 # Notes

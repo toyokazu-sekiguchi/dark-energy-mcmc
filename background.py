@@ -110,7 +110,7 @@ class DarkEnergy:
             self.lnz1min = 0
             self.lnz1max = np.log(3e3)
             if(self.binned):
-                self.nlnz1 = self.nbin
+                self.nlnz1 = max(10,self.nbin*4)
             else:
                 self.nlnz1 = 50
 
@@ -122,7 +122,7 @@ class DarkEnergy:
 
         if(self.lnrinterp):
             if(self.binned):
-                self.abin = np.linspace(np.exp(-self.lnz1min),np.exp(-self.lnz1max),self.nbin)**(1/self.pbin)
+                self.abin = np.linspace(np.exp(-self.lnz1min),np.exp(-self.lnz1max),self.nlnz1)**(1/self.pbin)
                 lnz1 = -np.log(self.abin)
             else:
                 lnz1 = np.linspace(self.lnz1min,self.lnz1max,self.nlnz1)

@@ -122,7 +122,7 @@ This analyses MCMC chain(s) produced in Step 1 and obtain parameter constraints 
   - Minor bugs fixed in `post.py`.
 * Nov 4th, 2020
   - The variety of plots are enhanced. Now 1d, 2d triangle and 2d rectangle plots are available.
-* Nov 13rd, 2020
+* Nov 13th, 2020
   - Bugs related to binned DE EoS are fixed.
 
 # To-do list

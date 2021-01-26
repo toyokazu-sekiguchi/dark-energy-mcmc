@@ -248,7 +248,7 @@ class Likelihood:
         if(self.useBAO or self.useCMB):
             try: 
                 BG.UpdateTherm()
-            except ValueError:
+            except:
                 return [-np.inf for i in range(self.nlikes)]
 
         if(self.verbose>0):

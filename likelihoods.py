@@ -249,6 +249,7 @@ class Likelihood:
             try: 
                 BG.UpdateTherm()
             except:
+                print('UpdateTherm failed')
                 return [-np.inf for i in range(self.nlikes)]
 
         if(self.verbose>0):
